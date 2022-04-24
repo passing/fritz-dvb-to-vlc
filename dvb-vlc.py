@@ -20,14 +20,12 @@ categories = {
 }
 
 logo_replace = [
-	("ä", "ae"),
-	("ö", "oe"),
-	("ü", "ue"),
-	("ß", "ss"),
-	(" / ", "_"),
-    ("[ /]", "_"),
-    ("[.,-]", ""),
-    ("\s", "")
+    ("ä", "ae"),
+    ("ö", "oe"),
+    ("ü", "ue"),
+    ("ß", "ss"),
+    ("[ /]+", "_"),
+    ("[.,-]", "")
 ]
 
 def get_m3u_channels(m3u_url):
@@ -41,7 +39,7 @@ def get_m3u_channels(m3u_url):
 
     for l in range(1, len(lines)-1, 3):
         # title from 1st line
-        title = re.sub('^#EXTINF:0,', '', lines[l])
+        title = re.sub('^#EXTINF:0,', '', lines[l]).strip()
         # option from 2nd line
         option = re.sub('^#EXTVLCOPT:', '', lines[l+1])
         # url from 3rd line
@@ -56,7 +54,7 @@ def get_m3u_channels(m3u_url):
 
 
 def get_channel_image(title, logo_url):
-    image=title.strip().lower()
+    image=title.lower()
 
     # replace patterns in image name
     for pattern, repl in logo_replace:
