@@ -1,20 +1,21 @@
 #!/usr/bin/python3
 
+import argparse
 import re
 import requests
 import xml.etree.ElementTree as ET
 
 categories = {
     "TV HD": {
-        "m3u_url": "http://dvb/dvb/m3u/tvhd.m3u",
+        "m3u_path": "dvb/m3u/tvhd.m3u",
         "logo_url": "http://tv.avm.de/tvapp/logos/hd"
     },
     "TV SD": {
-        "m3u_url": "http://dvb/dvb/m3u/tvsd.m3u",
+        "m3u_path": "dvb/m3u/tvsd.m3u",
         "logo_url": "http://tv.avm.de/tvapp/logos"
     },
     "Radio": {
-        "m3u_url": "http://dvb/dvb/m3u/radio.m3u",
+        "m3u_path": "dvb/m3u/radio.m3u",
         "logo_url": "http://tv.avm.de/tvapp/logos/radio"
     } 
 }
@@ -27,6 +28,14 @@ logo_replace = [
     ("[ /]+", "_"),
     ("[.,-]", "")
 ]
+
+
+def get_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--host', type=str, default="dvb", metavar='HOSTNAME', help='hostname of FRITZ!WLAN Repeater DVB-C')
+    parser.add_argument('--output', type=str, default="dvb.xspf", metavar='FILENAME', help='output filename')
+    return parser.parse_args()
+
 
 def get_m3u_channels(m3u_url):
     channels = {}
@@ -112,15 +121,18 @@ def export_xspf_playlist(channel_lists, filename):
 
 
 def main():
+    # get arguments
+    args = get_arguments()
+
     # download and convert m3u playlists
     channel_lists = {}
     for category, options in categories.items():
-        channels = get_m3u_channels(options["m3u_url"])
+        channels = get_m3u_channels('http://{}/{}'.format(args.host, options["m3u_path"]))
         add_playlist_logos(channels, options["logo_url"])
         channel_lists[category] = channels
 
     # export xspf playlist
-    export_xspf_playlist(channel_lists, "dvb.xspf")  
+    export_xspf_playlist(channel_lists, args.output)
 
 
 if __name__ == '__main__':
