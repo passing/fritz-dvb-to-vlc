@@ -8,15 +8,15 @@ import xml.etree.ElementTree as ET
 categories = {
     "TV HD": {
         "m3u_path": "dvb/m3u/tvhd.m3u",
-        "logo_url": "http://tv.avm.de/tvapp/logos/hd",
+        "logo_url": "https://tv.avm.de/tvapp/logos/hd",
     },
     "TV SD": {
         "m3u_path": "dvb/m3u/tvsd.m3u",
-        "logo_url": "http://tv.avm.de/tvapp/logos",
+        "logo_url": "https://tv.avm.de/tvapp/logos",
     },
     "Radio": {
         "m3u_path": "dvb/m3u/radio.m3u",
-        "logo_url": "http://tv.avm.de/tvapp/logos/radio",
+        "logo_url": "https://tv.avm.de/tvapp/logos/radio",
     },
 }
 
