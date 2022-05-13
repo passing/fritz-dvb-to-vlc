@@ -128,7 +128,8 @@ def export_xspf_playlist(channel_lists, filename):
 
             track_id += 1
 
-    # write xspf playlist to file
+    # write indented xspf playlist to file
+    ET.indent(playlist)
     tree = ET.ElementTree(playlist)
     tree.write(filename, encoding="UTF-8", xml_declaration=True)
 
